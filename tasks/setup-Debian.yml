@@ -1,7 +1,33 @@
 ---
+
+- name: Add mysql oracle apt key.
+  apt_key:
+    url: pgp.mit.edu
+    id: 5072E1F5
+    state: present
+  register: add_repository_key
+  ignore_errors: true
+  when: mysql_install_from_oracle
+
+- name: Add repository for mysql oracle.
+  apt_repository:
+    repo: "deb http://repo.mysql.com/apt/debian/ {{ ansible_distribution_release }} {{ mysql_repo_version }}"
+    state: present
+    update_cache: yes
+  when: mysql_install_from_oracle
+
+- name: Add repository for oracle python connector.
+  apt_repository:
+    repo: "deb http://repo.mysql.com/apt/debian/ {{ ansible_distribution_release }} connector-python-2.0"
+    state: present
+    update_cache: yes
+  when: mysql_install_from_oracle
+
 - name: Check if MySQL is already installed.
   stat: path=/etc/init.d/mysql
   register: mysql_installed
+
+# check if oracle repos are used. otherwise remove package and reinstall with original repos
 
 - name: Update apt cache if MySQL is not yet installed.
   apt: update_cache=yes
