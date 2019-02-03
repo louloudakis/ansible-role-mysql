@@ -2,7 +2,7 @@
 
 - name: Add mysql oracle apt key.
   apt_key:
-    url: pgp.mit.edu
+    url: keys.gnupg.net
     id: 5072E1F5
     state: present
   register: add_repository_key
@@ -18,7 +18,7 @@
 
 - name: Add repository for oracle python connector.
   apt_repository:
-    repo: "deb http://repo.mysql.com/apt/debian/ {{ ansible_distribution_release }} connector-python-2.0"
+    repo: "deb http://repo.mysql.com/apt/debian/ {{ ansible_distribution_release }} connector-python-2.1"
     state: present
     update_cache: yes
   when: mysql_install_from_oracle

@@ -83,4 +83,4 @@
   with_items: "{{ mysql_anonymous_hosts.stdout_lines|default([]) }}"
 
 - name: Remove MySQL test database.
-  mysql_db: "name='test' state=absent"
+  command: "mysql -u root -NBe 'DROP DATABASE IF EXISTS test;'"
