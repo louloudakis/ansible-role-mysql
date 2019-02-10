@@ -56,3 +56,16 @@
     - ib_logfile0
     - ib_logfile1
   when: not mysql_installed.stat.exists
+
+- name: Update installed flag
+  stat: path=/etc/init.d/mysql
+  register: mysql_installed
+
+- name: Ensure /etc/init.d/mysql exists.
+  copy:
+    src: "etc/init.d/mysql"
+    dest: "/etc/init.d/mysql"
+    owner: "root"
+    group: "root"
+    mode: 0755
+  when: not mysql_installed.stat.exists
